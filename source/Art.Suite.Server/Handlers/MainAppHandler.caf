@@ -1,0 +1,22 @@
+import &StandardImport
+
+class MainAppHandler extends PromiseHandler
+  @getter handleUrlRegex: -> ///i ^/ (\?.*)? $
+
+  handleHtmlRequest: (request, requestData) ->
+    "" <!DOCTYPE html>
+    + Html
+      Head
+        Meta charset: :utf-8
+        Title "" #{config.app}
+
+      Body
+        Script
+          """
+            self.artConfig = #{jsStringify config.clientArtConfig};
+            self.artConfigName = '#{&ArtConfig.configName || :Production}';
+
+        Script
+          async:    true
+          src:      cacheSafeUrl :Client.js
+          charset:  :utf-8

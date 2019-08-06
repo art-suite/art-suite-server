@@ -1,0 +1,17 @@
+import &ArtStandardLib, &ArtConfig
+
+class Config extends Configurable
+  @defaults
+    app: null # REQUIRED - link to the root namespace for your app
+
+    clientArtConfig:
+      if getEnv() extract clientArtConfig
+        try
+          JSON.parse clientArtConfig
+        catch e
+          log.error
+            "Error parsing process.env.clientArtConfig JSON: #{formattedInspect clientArtConfig}"
+            e
+          throw e
+      else
+        Art.Ery.remoteServer: true
