@@ -1,7 +1,7 @@
 import &StandardImport
 
 class CatchAllHandler extends PromiseHandler
-  @getter handleUrlRegex: -> /.*/
+  @handleUrlRegex /.*/
 
   handleHtmlRequest: (request, requestData) ->
     statusCode: 404

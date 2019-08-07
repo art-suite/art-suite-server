@@ -10,6 +10,20 @@ npm:
   dependencies:
     art-build-configurator: :*
 
+    compress:     :*
+    compression:  :*
+    quantize:     :*
+    detect-node:  :*
+    express:      :*
+    jsonwebtoken: :*
+    morgan:       :*
+    querystring:  :*
+    pluralize:    :*
+    throng:       :*
+    uuid:         :*
+    xhr2:         :*
+    image-size:   :*
+
 webpack:
   # common properties are merged into each target's properties
   common: {}

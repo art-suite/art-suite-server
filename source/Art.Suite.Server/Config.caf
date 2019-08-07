@@ -4,6 +4,12 @@ class Config extends Configurable
   @defaults
     app: null # REQUIRED - link to the root namespace for your app
 
+    ##
+      image:
+      description:
+      title:
+    metadata: {}
+
     clientArtConfig:
       if getEnv() extract clientArtConfig
         try
@@ -15,3 +21,9 @@ class Config extends Configurable
           throw e
       else
         Art.Ery.remoteServer: true
+
+  @on configured: ({props:{config}})->
+    if config?.metadata extract? image
+      {width, height} = &ImageSize &path.join :./public image
+      config.metadata.imageWidth ?= width
+      config.metadata.imageHeight ?= height
