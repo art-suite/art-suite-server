@@ -44,8 +44,8 @@ class MainAppHandler extends PromiseHandler
             image
           []
             Meta property:  :og:image             content: image
-            Meta property:  :og:image:width       content: image if imageWidth
-            Meta property:  :og:image:height      content: image if imageHeight
+            Meta property:  :og:image:width       content: imageWidth if imageWidth
+            Meta property:  :og:image:height      content: imageHeight if imageHeight
             Meta name:      :twitter:image        content: image
 
       Body
