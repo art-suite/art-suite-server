@@ -2,7 +2,6 @@ import &StandardImport, {} &Url
 
 class MainAppHandler extends PromiseHandler
   canHandleRequest: (request) ->
-    log canHandleRequest: {} config
     config.appUrlRegexp.test request.url
 
   ##
