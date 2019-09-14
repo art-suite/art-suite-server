@@ -27,6 +27,8 @@ class Server
       app: <NeptuneNamespace>
         Link to your app's root namespace.
         sets: &Config.config.app
+      appUrlRegexp: regexp
+        if present, used to detect urls that should be handled by the clientside app
 
       # options is passed to: &ArtConfig.configure first
       loadPipelines:  -> # invoked after configure
@@ -45,7 +47,7 @@ class Server
 
       # NOTE: loadPipelines is a function so it can get called AFTER: require "art-aws/Server"
   @start: (options) ->
-    options extract loadPipelines, postConfigInit, app, metadata
+    options extract loadPipelines, postConfigInit, app, metadata, appUrlRegexp
 
     if app?.prototype instanceof Neptune.Namespace
       log art-suite-server.start:
@@ -59,7 +61,7 @@ class Server
       :Art.Suite.Server
       Promise
       .then -> &ArtConfig.configure deepMerge options,
-        artConfig: Art.Suite.Server: {} app, metadata
+        artConfig: Art.Suite.Server: {} app, metadata, appUrlRegexp
 
       .then loadPipelines
       .then -> &ArtEry.sendInitializeRequestToAllPipelines() if isTest

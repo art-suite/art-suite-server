@@ -9,6 +9,7 @@ class Config extends Configurable
       description:
       title:
     metadata: {}
+    appUrlRegexp: ///i ^/ (\?.*)? $
 
     clientArtConfig:
       if getEnv() extract clientArtConfig

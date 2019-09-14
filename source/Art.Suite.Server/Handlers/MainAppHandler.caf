@@ -1,13 +1,17 @@
 import &StandardImport, {} &Url
 
 class MainAppHandler extends PromiseHandler
-  @handleUrlRegex ///i ^/ (\?.*)? $
+  canHandleRequest: (request) ->
+    log canHandleRequest: {} config
+    config.appUrlRegexp.test request.url
 
   ##
     config.metadata:
       icons: map from image-sizes to asset-paths
   handleHtmlRequest: (request, requestData) ->
-    config.metadata extract? title, description, image, imageWidth, imageHeight, icons, tags
+    config.metadata extract?
+      title, description, image, imageWidth, imageHeight, icons, tags
+      appleTouchIcons
     title ?=
       upperCamelCase
         config.app.toString()
@@ -15,6 +19,12 @@ class MainAppHandler extends PromiseHandler
         [0]
         .join ' '
         ' '
+
+    url =
+      Url.format {}
+        protocol: :https
+        host:     lowerCase request.get :host
+        pathname: request.path
 
     tags = merge
       if present description
@@ -42,20 +52,7 @@ class MainAppHandler extends PromiseHandler
 
       tags
 
-    url =
-      Url.format {}
-        protocol: :https
-        host:     lowerCase request.get :host
-        pathname: request.path
-
     type = :website
-
-    bestAppleTouchIconSize = null
-    each icon, size in icons
-      if (size |= 0) >= 180
-        bestAppleTouchIconSize = min
-          bestAppleTouchIconSize ? size
-          size
 
     "" <!DOCTYPE html>
     + Html
@@ -63,11 +60,11 @@ class MainAppHandler extends PromiseHandler
         Meta charset: :utf-8
         Title title
 
-        if size = bestAppleTouchIconSize
-          Link rel: :apple-touch-icon href: icons[size], type: :image/png sizes: "#{size}x#{size}"
+        array icon, size in appleTouchIcons
+          Link rel: :apple-touch-icon href: icon, type: :image/png sizes: "#{size}x#{size}"
 
         array icon, size in icons
-          Link rel: :icon href: icon, type: :image/png sizes: "#{size}x#{size}"
+          Link rel: :icon             href: icon, type: :image/png sizes: "#{size}x#{size}"
 
         array content, name in tags
           Meta
