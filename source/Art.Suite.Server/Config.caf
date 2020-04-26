@@ -10,6 +10,7 @@ class Config extends Configurable
       title:
     metadata: {}
     appUrlRegexp: ///i ^/ (\?.*)? $
+    head: null # append to the head tag
 
     clientArtConfig:
       if getEnv() extract clientArtConfig

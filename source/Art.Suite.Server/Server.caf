@@ -47,7 +47,7 @@ class Server
 
       # NOTE: loadPipelines is a function so it can get called AFTER: require "art-aws/Server"
   @start: (options) ->
-    options extract loadPipelines, postConfigInit, app, metadata, appUrlRegexp
+    options extract loadPipelines, postConfigInit, app, metadata, appUrlRegexp, head
 
     if app?.prototype instanceof Neptune.Namespace
       log art-suite-server.start:
@@ -61,7 +61,7 @@ class Server
       :Art.Suite.Server
       Promise
       .then -> &ArtConfig.configure deepMerge options,
-        artConfig: Art.Suite.Server: {} app, metadata, appUrlRegexp
+        artConfig: Art.Suite.Server: {} app, metadata, appUrlRegexp, head
 
       .then loadPipelines
       .then -> &ArtEry.sendInitializeRequestToAllPipelines() if isTest
@@ -74,3 +74,5 @@ class Server
           numWorkers:   WEB_CONCURRENCY || 1
           port:         PORT
           options
+      .tapCatch (e) ->
+        log "Error starting Art.Suite.Server server", e

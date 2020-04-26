@@ -70,6 +70,8 @@ class MainAppHandler extends PromiseHandler
             if /^og:/.test name then  {} content, property: name
             else                      {} content, name
 
+        config.head
+
       Body
         Script
           """
